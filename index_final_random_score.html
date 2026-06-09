@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sunny 期末複習站｜CH9-15</title>
+  <style>
+    :root {
+      --bg: #fff7fb;
+      --card: #ffffff;
+      --text: #2f2a32;
+      --muted: #746a74;
+      --primary: #e85d9e;
+      --primary-dark: #c94583;
+      --accent: #ffe3ef;
+      --ok: #2e9d65;
+      --bad: #d94a4a;
+      --border: #f3cfe0;
+      --shadow: 0 8px 24px rgba(232, 93, 158, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif;
+      background: linear-gradient(180deg, #fff7fb 0%, #fff 55%, #fff7fb 100%);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    header {
+      padding: 28px 18px 18px;
+      text-align: center;
+      background: linear-gradient(135deg, #ffd7e8, #fff3f8);
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 { margin: 0 0 8px; font-size: clamp(24px, 6vw, 40px); }
+    .subtitle { color: var(--muted); font-size: 15px; margin: 0; }
+
+    .container {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 247, 251, 0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    nav a {
+      display: inline-block;
+      text-decoration: none;
+      color: var(--primary-dark);
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--border);
+      margin-right: 6px;
+    }
+
+    section { margin: 22px 0; }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: clamp(22px, 5vw, 32px);
+      margin: 12px 0 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin: 14px 0;
+    }
+
+    .chapter-title {
+      font-size: 20px;
+      color: var(--primary-dark);
+      margin: 8px 0 10px;
+      border-left: 6px solid var(--primary);
+      padding-left: 10px;
+    }
+
+    .question {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid #f1d6e3;
+      background: #fffafd;
+      margin: 12px 0;
+    }
+
+    .q-title { font-weight: 800; margin-bottom: 10px; }
+    .options { display: grid; gap: 8px; }
+    .option {
+      padding: 10px 12px;
+      border: 1px solid #ead0dc;
+      background: #fff;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .option:hover { transform: translateY(-1px); border-color: var(--primary); }
+    .option.correct { background: #e9f8f0; border-color: var(--ok); color: #176341; font-weight: 800; }
+    .option.wrong { background: #ffecec; border-color: var(--bad); color: #982d2d; }
+
+    .answer {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f7fff9;
+      color: #176341;
+      border: 1px solid #bfe8cf;
+      font-weight: 700;
+    }
+    .answer.show { display: block; }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800;
+      padding: 10px 14px;
+      cursor: pointer;
+      margin: 6px 6px 0 0;
+    }
+    button:hover { background: var(--primary-dark); }
+    .ghost { background: #fff; color: var(--primary-dark); border: 1px solid var(--border); }
+
+    .fill-list, .review-list { padding-left: 20px; }
+    .fill-list li, .review-list li { margin: 6px 0; }
+    .blank {
+      display: inline-block;
+      min-width: 90px;
+      border-bottom: 2px solid var(--primary);
+      color: transparent;
+    }
+
+    .tag {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--primary-dark);
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      margin: 2px;
+    }
+
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+
+    .big-memory {
+      font-size: 19px;
+      font-weight: 900;
+      color: var(--primary-dark);
+      background: #fff2f8;
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+      margin: 8px 0;
+    }
+
+
+
+
+    .score-box {
+      display: none;
+      margin: 12px 0;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #fff2f8;
+      border: 1px solid var(--border);
+      color: var(--primary-dark);
+      font-weight: 900;
+      text-align: center;
+    }
+    .score-box.show { display: block; }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
+
+    .filter-bar button {
+      margin: 0;
+    }
+
+    .filter-bar button.active {
+      background: var(--primary-dark);
+      box-shadow: 0 4px 12px rgba(201, 69, 131, 0.2);
+    }
+
+    .hidden { display: none !important; }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 28px 12px 40px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 12px; }
+      .card { padding: 13px; border-radius: 15px; }
+      .question { padding: 12px; }
+      nav a { font-size: 14px; padding: 7px 10px; }
+      button { width: 100%; margin-right: 0; }
+      .filter-bar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filter-bar button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Sunny 期末複習站</h1>
+    <p class="subtitle">CH9～CH15 選擇題＋必考填充＋考前速讀</p>
+  </header>
+
+  <nav>
+    <a href="#mcq">選擇題</a>
+    <a href="#fill">必考填充</a>
+    <a href="#memory">填充轉選擇</a>
+    <a href="#review">考前速讀</a>
+  </nav>
+
+  <main class="container">
+    <section id="mcq">
+      <h2 class="section-title">📚 CH9～CH15 選擇題</h2>
+      <div class="card">
+        <p><span class="tag">選擇題</span> 可依章節練習，也可以選全部一起刷。</p>
+        <div class="filter-bar" id="mcq-filter">
+          <button class="active" onclick="filterMcq('all', this)">全部</button>
+          <button class="ghost" onclick="filterMcq('第09章', this)">CH09</button>
+          <button class="ghost" onclick="filterMcq('第10章', this)">CH10</button>
+          <button class="ghost" onclick="filterMcq('第11章', this)">CH11</button>
+          <button class="ghost" onclick="filterMcq('第12章', this)">CH12</button>
+          <button class="ghost" onclick="filterMcq('第13章', this)">CH13</button>
+          <button class="ghost" onclick="filterMcq('第14章', this)">CH14</button>
+          <button class="ghost" onclick="filterMcq('第15章', this)">CH15</button>
+          <button class="ghost" onclick="randomAllMcq(this)">🎲 隨機35題</button>
+        </div>
+        <button onclick="showAllAnswers('mcq')">顯示全部答案</button>
+        <button class="ghost" onclick="resetQuiz('mcq')">重置作答</button>
+        <div id="mcq-score" class="score-box"></div>
+        <div id="mcq-list"></div>
+      </div>
+    </section>
+
+    <section id="fill">
+      <h2 class="section-title">✏️ 必考填充題</h2>
+      <div class="card">
+        <p><span class="tag">考填充</span> 這 4 題要背順序與完整答案。</p>
+        <div class="filter-bar" id="fill-filter">
+          <button class="active" onclick="filterFill('all', this)">全部</button>
+          <button class="ghost" onclick="filterFill('ch10', this)">第10章</button>
+          <button class="ghost" onclick="filterFill('ch11', this)">第11章</button>
+          <button class="ghost" onclick="filterFill('ch13', this)">第13章</button>
+        </div>
+        <div class="question" data-fill-ch="ch10">
+          <div class="q-title">1. 電子商務依交易對象的不同，可分為哪四種類型？</div>
+          <ol class="fill-list"><li><span class="blank">__________</span></li><li><span class="blank">__________</span></li><li><span class="blank">__________</span></li><li><span class="blank">__________</span></li></ol>
+          <button onclick="toggleAnswer(this)">看答案</button>
+          <div class="answer">B2B、B2C、C2C、C2B</div>
+        </div>
+        <div class="question" data-fill-ch="ch11">
+          <div class="q-title">2. 客戶關係管理分為哪三個階段？需按照步驟順序回答。</div>
+          <ol class="fill-list"><li><span class="blank">__________</span></li><li><span class="blank">__________</span></li><li><span class="blank">__________</span></li></ol>
+          <button onclick="toggleAnswer(this)">看答案</button>
+          <div class="answer">獲取 → 增進 → 維持</div>
+        </div>
+        <div class="question" data-fill-ch="ch11">
+          <div class="q-title">3. 客戶關係管理包含哪四個流程？需按照步驟順序回答。</div>
+          <ol class="fill-list"><li><span class="blank">__________</span></li><li><span class="blank">__________</span></li><li><span class="blank">__________</span></li><li><span class="blank">__________</span></li></ol>
+          <button onclick="toggleAnswer(this)">看答案</button>
+          <div class="answer">知識發現 → 行銷規劃 → 客戶互動 → 分析修正</div>
+        </div>
+        <div class="question" data-fill-ch="ch13">
+          <div class="q-title">4. 網路社群提供多元且豐富的功能，具有哪三個特性？</div>
+          <ol class="fill-list"><li><span class="blank">__________</span></li><li><span class="blank">__________</span></li><li><span class="blank">__________</span></li></ol>
+          <button onclick="toggleAnswer(this)">看答案</button>
+          <div class="answer">虛擬性、開放性、獨特性</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="memory">
+      <h2 class="section-title">🎯 填充轉選擇練習</h2>
+      <div class="card">
+        <p>這區是專門幫你把老師原本的填充題，改成選擇題幫你考前記憶。</p>
+        <div class="filter-bar" id="memory-filter">
+          <button class="active" onclick="filterMemory('all', this)">全部</button>
+          <button class="ghost" onclick="filterMemory('第10章', this)">第10章</button>
+          <button class="ghost" onclick="filterMemory('第11章', this)">第11章</button>
+          <button class="ghost" onclick="filterMemory('第13章', this)">第13章</button>
+        </div>
+        <button onclick="showAllAnswers('memory')">顯示全部答案</button>
+        <button class="ghost" onclick="resetQuiz('memory')">重置作答</button>
+        <div id="memory-list"></div>
+      </div>
+    </section>
+
+    <section id="review">
+      <h2 class="section-title">⚡ 考前速讀</h2>
+      <div class="review-grid">
+        <div class="card"><h3>電子商務四類型</h3><div class="big-memory">B2B → B2C → C2C → C2B</div><ul class="review-list"><li>B2B：企業對企業</li><li>B2C：企業對消費者</li><li>C2C：消費者對消費者</li><li>C2B：消費者對企業</li></ul></div>
+        <div class="card"><h3>CRM 三階段</h3><div class="big-memory">獲取 → 增進 → 維持</div><ul class="review-list"><li>獲取新客戶</li><li>增進現有客戶價值</li><li>維持具有價值客戶</li></ul></div>
+        <div class="card"><h3>CRM 四流程</h3><div class="big-memory">知識 → 行銷 → 客戶 → 分析</div><ul class="review-list"><li>知識發現</li><li>行銷規劃</li><li>客戶互動</li><li>分析修正</li></ul></div>
+        <div class="card"><h3>網路社群三特性</h3><div class="big-memory">虛擬性 → 開放性 → 獨特性</div><ul class="review-list"><li>虛擬性</li><li>開放性</li><li>獨特性</li></ul></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>手機、平板、電腦都可預覽｜考前加油 🌸</footer>
+
+  <script>
+    const mcqData = [
+      {ch:'第09章 人工智慧', q:'以下何者可用來判斷機器是否具有思考及判斷能力？', options:['圖靈測試','摩爾定律','以上皆非'], ans:0},
+      {ch:'第09章 人工智慧', q:'下列何種工作是不容易被人工智慧所取代的？', options:['經驗性工作','抽象工作','以上皆是'], ans:1},
+      {ch:'第09章 人工智慧', q:'非監督式學習的主要應用是？', options:['分群','連結','以上皆是'], ans:2},
+      {ch:'第09章 人工智慧', q:'下列何者非卷積神經網路的主要用途？', options:['圖像辨識','文字辨識','人臉辨識'], ans:1},
+      {ch:'第09章 人工智慧', q:'下列何者不是遞歸神經網路的主要用途？', options:['語音辨識','機器翻譯','物件偵測'], ans:0},
+      {ch:'第10章 從電子商務到行動商務', q:'下列何者是讓 Web 1.0 轉變到 Web 2.0 的驅動力？', options:['全球性的連結','使用者參與','以上皆是'], ans:2},
+      {ch:'第10章 從電子商務到行動商務', q:'以下何者為電子商務的特色？', options:['無所不在','地域性','以上皆是'], ans:0},
+      {ch:'第10章 從電子商務到行動商務', q:'電子商務中的付款屬於哪個構面的行為？', options:['資訊流','金流','物流'], ans:1},
+      {ch:'第10章 從電子商務到行動商務', q:'連結企業上下游廠商的電子商務屬於哪一種類型？', options:['B2B','C2C','以上皆非'], ans:0},
+      {ch:'第10章 從電子商務到行動商務', q:'下列何者不是行動運算的特性？', options:['線上線下整合','離線資訊處理','以上皆是'], ans:2},
+      {ch:'第11章 企業內的資訊系統', q:'下列何者是企業系統？', options:['供應鏈管理系統','客戶管理系統','以上皆是'], ans:2},
+      {ch:'第11章 企業內的資訊系統', q:'下列何者是企業系統的特色？', options:['流程導向','資料導向','以上皆是'], ans:0},
+      {ch:'第11章 企業內的資訊系統', q:'下列何者是企業導入 ERP 時對組織的衝擊？', options:['財務負擔','對員工的衝擊','以上皆是'], ans:1},
+      {ch:'第11章 企業內的資訊系統', q:'接單式生產屬於哪一種供應鏈型態？', options:['推式供應鏈','拉式供應鏈','以上皆非'], ans:1},
+      {ch:'第11章 企業內的資訊系統', q:'企業系統未來發展趨勢是？', options:['與社群網站整合','供應商各有特色','以上皆非'], ans:0},
+      {ch:'第12章 產業電子化', q:'以下何者是工業 4.0 的特色？', options:['智慧機械','軟體','以上皆是'], ans:2},
+      {ch:'第12章 產業電子化', q:'以下何者是工業 4.0 的核心？', options:['虛實整合系統','機器人','以上皆是'], ans:0},
+      {ch:'第12章 產業電子化', q:'在虛實整合系統中，可以做到自我感知的是？', options:['連結層','轉換層','認知層'], ans:1},
+      {ch:'第12章 產業電子化', q:'以下何者為新零售的思維？', options:['以消費者為中心','由企業主導','以上皆非'], ans:0},
+      {ch:'第12章 產業電子化', q:'下列何者是物聯網在智慧農業上的應用？', options:['環境監控','影像監控','以上皆是'], ans:2},
+      {ch:'第13章 社群媒體的快速發展', q:'以下何者為網路社群的特性？', options:['虛擬性','封閉性','實名制'], ans:0},
+      {ch:'第13章 社群媒體的快速發展', q:'哪一種社群屬於媒體研究性高、社會過程也高的社群？', options:['部落格','內容媒體','虛擬世界'], ans:2},
+      {ch:'第13章 社群媒體的快速發展', q:'以下何者為網路直播的特點？', options:['即時發布內容','即時互動','以上皆是'], ans:2},
+      {ch:'第13章 社群媒體的快速發展', q:'以下何者不是網紅的收入來源？', options:['廣告','月薪','業配文'], ans:1},
+      {ch:'第13章 社群媒體的快速發展', q:'記名式悠遊卡可視為哪一種會員制？', options:['儲值','積分','以上皆非'], ans:0},
+      {ch:'第14章 資訊系統開發', q:'由使用者主導的系統開發，會採用何種方式？', options:['雛型法','使用者自建系統','生命週期法'], ans:1},
+      {ch:'第14章 資訊系統開發', q:'以下系統開發對組織造成的風險，何者最低？', options:['自動化','合理化','典範轉移'], ans:0},
+      {ch:'第14章 資訊系統開發', q:'UML 中，用來描述使用者需求的圖是？', options:['元件圖','使用案例圖','部署圖'], ans:1},
+      {ch:'第14章 資訊系統開發', q:'下列何者不是參與 Scrum 的角色？', options:['產品負責人','團隊成員','利害關係人'], ans:2},
+      {ch:'第14章 資訊系統開發', q:'在二個衝刺間所召開的會議是？', options:['衝刺規劃會議','每日站立會議','衝刺回顧檢討會議'], ans:2},
+      {ch:'第15章 資訊安全', q:'下列何者是來自網際網路的資訊安全威脅源？', options:['側錄','軟體停擺','硬體當機'], ans:0},
+      {ch:'第15章 資訊安全', q:'以下何者是網路上對特定對象的攻擊模式？', options:['阻絕服務','勒索軟體','以上皆是'], ans:2},
+      {ch:'第15章 資訊安全', q:'防火牆的類型有？', options:['封包過濾型','服務代理型','以上皆是'], ans:2},
+      {ch:'第15章 資訊安全', q:'以下何者是網路上對無特定對象的攻擊方式？', options:['阻絕服務','木馬程式','以上皆是'], ans:1},
+      {ch:'第15章 資訊安全', q:'電子商務網站目前最普遍使用的安全通訊協定是？', options:['SSL','RSA','以上皆是'], ans:0}
+    ];
+
+    const memoryData = [
+      {ch:'第10章 從電子商務到行動商務', q:'電子商務依交易對象的不同，可分為哪四種類型？', options:['B2B、B2C、C2C、C2B','B2B、B2C、ERP、SCM','B2G、G2C、C2G、G2G','CRM、ERP、SCM、BPR'], ans:0},
+      {ch:'第11章 企業內的資訊系統', q:'客戶關係管理分為哪三個階段？（須按照步驟順序回答）', options:['獲取 → 增進 → 維持','維持 → 增進 → 獲取','增進 → 獲取 → 維持','維持 → 獲取 → 增進'], ans:0},
+      {ch:'第11章 企業內的資訊系統', q:'客戶關係管理包含哪四個流程？（須按照步驟順序回答）', options:['知識發現 → 行銷規劃 → 客戶互動 → 分析修正','行銷規劃 → 知識發現 → 客戶互動 → 分析修正','客戶互動 → 分析修正 → 知識發現 → 行銷規劃','分析修正 → 客戶互動 → 行銷規劃 → 知識發現'], ans:0},
+      {ch:'第13章 社群媒體的快速發展', q:'網路社群提供多元且豐富的功能，請問其具有哪三個特性？', options:['虛擬性、開放性、獨特性','即時性、安全性、封閉性','地域性、封閉性、實名制','物流性、價格性、娛樂性'], ans:0}
+    ];
+
+    function renderQuiz(targetId, data) {
+      const el = document.getElementById(targetId);
+      let html = '';
+      let currentCh = '';
+      data.forEach((item, idx) => {
+        if (item.ch !== currentCh) {
+          currentCh = item.ch;
+          html += `<h3 class="chapter-title">${currentCh}</h3>`;
+        }
+        html += `<div class="question" data-answer="${item.ans}" data-correct="0" data-done="0">
+          <div class="q-title">${idx + 1}. ${item.q}</div>
+          <div class="options">${item.options.map((op, i) => `<div class="option" onclick="chooseOption(this, ${i}, ${item.ans})">${String.fromCharCode(65+i)}. ${op}</div>`).join('')}</div>
+          <div class="answer">答案：${String.fromCharCode(65+item.ans)}. ${item.options[item.ans]}</div>
+        </div>`;
+      });
+      el.innerHTML = html;
+      if (targetId === 'mcq-list') updateMcqScore(true);
+    }
+
+    function chooseOption(el, selected, answer) {
+      const parent = el.closest('.question');
+      if (parent.dataset.done === '1') return;
+
+      parent.dataset.done = '1';
+      parent.dataset.correct = selected === answer ? '1' : '0';
+
+      parent.querySelectorAll('.option').forEach((opt, idx) => {
+        opt.classList.remove('correct','wrong');
+        if (idx === answer) opt.classList.add('correct');
+      });
+      if (selected !== answer) el.classList.add('wrong');
+      parent.querySelector('.answer').classList.add('show');
+
+      if (parent.closest('#mcq')) updateMcqScore(false);
+    }
+
+    function updateMcqScore(resetOnly) {
+      const scoreBox = document.getElementById('mcq-score');
+      if (!scoreBox) return;
+      if (resetOnly) {
+        scoreBox.classList.remove('show');
+        scoreBox.innerHTML = '';
+        return;
+      }
+
+      const questions = Array.from(document.querySelectorAll('#mcq-list .question'));
+      const total = questions.length;
+      const done = questions.filter(q => q.dataset.done === '1').length;
+      const correct = questions.filter(q => q.dataset.correct === '1').length;
+      const percent = total ? Math.round((correct / total) * 100) : 0;
+
+      scoreBox.classList.add('show');
+      scoreBox.innerHTML = `目前答對：${correct} / ${total} 題　｜　已作答：${done} / ${total} 題　｜　正確率：${percent}%`;
+
+      if (done === total && total > 0) {
+        scoreBox.innerHTML = `🎉 測驗完成！答對：${correct} / ${total} 題　｜　正確率：${percent}%`;
+      }
+    }
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function randomAllMcq(btn) {
+      setActiveButton('mcq-filter', btn);
+      resetQuiz('mcq');
+      renderQuiz('mcq-list', shuffleArray(mcqData));
+      document.getElementById('mcq').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function toggleAnswer(btn) {
+      btn.nextElementSibling.classList.toggle('show');
+    }
+
+    function showAllAnswers(sectionId) {
+      document.querySelectorAll(`#${sectionId} .question`).forEach(q => {
+        const ans = Number(q.dataset.answer);
+        q.querySelectorAll('.option').forEach((opt, idx) => {
+          if (idx === ans) opt.classList.add('correct');
+        });
+        const a = q.querySelector('.answer');
+        if (a) a.classList.add('show');
+      });
+    }
+
+    function resetQuiz(sectionId) {
+      document.querySelectorAll(`#${sectionId} .option`).forEach(o => o.classList.remove('correct','wrong'));
+      document.querySelectorAll(`#${sectionId} .answer`).forEach(a => a.classList.remove('show'));
+      document.querySelectorAll(`#${sectionId} .question`).forEach(q => {
+        q.dataset.done = '0';
+        q.dataset.correct = '0';
+      });
+      if (sectionId === 'mcq') updateMcqScore(true);
+    }
+
+
+    function setActiveButton(groupId, btn) {
+      document.querySelectorAll(`#${groupId} button`).forEach(b => {
+        b.classList.remove('active');
+        if (!b.classList.contains('ghost')) b.classList.add('ghost');
+      });
+      btn.classList.add('active');
+      btn.classList.remove('ghost');
+    }
+
+    function filterFill(ch, btn) {
+      setActiveButton('fill-filter', btn);
+      document.querySelectorAll('#fill .question').forEach(q => {
+        const match = ch === 'all' || q.dataset.fillCh === ch;
+        q.classList.toggle('hidden', !match);
+      });
+    }
+
+    function filterMcq(ch, btn) {
+      setActiveButton('mcq-filter', btn);
+      resetQuiz('mcq');
+      const data = ch === 'all' ? mcqData : mcqData.filter(item => item.ch.startsWith(ch));
+      renderQuiz('mcq-list', data);
+    }
+
+    function filterMemory(ch, btn) {
+      setActiveButton('memory-filter', btn);
+      resetQuiz('memory');
+      const data = ch === 'all' ? memoryData : memoryData.filter(item => item.ch.startsWith(ch));
+      renderQuiz('memory-list', data);
+    }
+
+    renderQuiz('mcq-list', mcqData);
+    renderQuiz('memory-list', memoryData);
+  </script>
+</body>
+</html>
